@@ -1,5 +1,4 @@
 FROM python:3.11-slim
-LABEL name:"madhan"
 WORKDIR /app
 
 COPY requirements.txt .
