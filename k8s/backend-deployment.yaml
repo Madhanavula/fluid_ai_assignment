@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: flask-backend
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: flask-backend
+
+  template:
+    metadata:
+      labels:
+        app: flask-backend
+
+    spec:
+      containers:
+      - name: flask-backend
+
+        image: kubemadhan/flask-devops-app:v1
+
+        ports:
+        - containerPort: 5000
+
+        env:
+        - name: DB_HOST
+          value: mysql-service
+
+        - name: DB_USER
+          value: root
+
+        - name: DB_PASSWORD
+          value: rootpassword
+
+        - name: DB_NAME
+          value: devopsdb
+
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+
+          initialDelaySeconds: 15
+          periodSeconds: 10
